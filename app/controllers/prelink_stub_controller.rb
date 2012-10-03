@@ -20,7 +20,7 @@ class PrelinkStubController < ApplicationController
   <soap:Body>
     <GetResultsFromRequestNumberResponse xmlns="http://www.prelink.co.za/">
       <GetResultsFromRequestNumberResult>' + # params["Envelope"]["Body"].to_s +
-      '</GetResultsFromRequestNumberResult>
+    '</GetResultsFromRequestNumberResult>
     </GetResultsFromRequestNumberResponse>
   </soap:Body>
 </soap:Envelope>'
@@ -59,6 +59,22 @@ class PrelinkStubController < ApplicationController
     :return => :string,
     :to     => :get_new_results
   def get_new_results
+    @orders = LabOrder.find(:all, :conditions => ["retrieved = 0"]) rescue []
+
+    string = ""
+
+    @orders.each do |order|
+      order.update_attribute(:retrieved, 1)
+      
+      string = string + '<Result diffgr:id="Result1" msdata:rowOrder="0">
+          <RequestNumber>' + order.request_number + '</RequestNumber>
+          <Result>' + order.result + '</Result>
+          <TestUnit>' + order.test_unit + '</TestUnit>
+          <TestRange>' + order.test_range + '</TestRange>
+          <Colour>' + order.colour + '</Colour>
+      </Result>'
+    end
+    
     xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <soap:Body>
@@ -85,311 +101,9 @@ class PrelinkStubController < ApplicationController
                     </xs:element>
                 </xs:schema>
                 <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
-                    <DocumentElement xmlns="">
-                        <Result diffgr:id="Result1" msdata:rowOrder="0">
-                            <RequestNumber>BKQ10A</RequestNumber>
-                            <Result>1.03</Result>
-                            <TestUnit>g</TestUnit>
-                            <Colour>#FFFFFF</Colour>
-                        </Result>
-                        <Result diffgr:id="Result2" msdata:rowOrder="1">
-                            <RequestNumber>BKQ109</RequestNumber>
-                            <Result>0.23</Result>
-                            <TestUnit>g</TestUnit>
-                            <Colour>#FFFFFF</Colour>
-                        </Result>
-                        <Result diffgr:id="Result3" msdata:rowOrder="2">
-                            <RequestNumber>BKQ108</RequestNumber>
-                            <Result>0.65</Result>
-                            <TestUnit>g</TestUnit>
-                            <Colour>#FFFFFF</Colour>
-                        </Result>
-                        <Result diffgr:id="Result4" msdata:rowOrder="3">
-                            <RequestNumber>BIP17S</RequestNumber>
-                            <Result>Not Done</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result5" msdata:rowOrder="4">
-                            <RequestNumber>BIP17S</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit>None</TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result6" msdata:rowOrder="5">
-                            <RequestNumber>BIP17S</RequestNumber>
-                            <TestCode>CSFAPP</TestCode>
-                            <Result>Clear</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result7" msdata:rowOrder="6">
-                            <RequestNumber>BIP17S</RequestNumber>
-                            <Result>0</Result>
-                            <TestUnit>10^6/uL</TestUnit>
-                            <TestRange>0 - 20</TestRange>
-                            <Colour>#FFFFFF</Colour>
-                        </Result>
-                        <Result diffgr:id="Result8" msdata:rowOrder="7">
-                            <RequestNumber>BIP17S</RequestNumber>
-                            <Result>110</Result>
-                            <TestUnit>10^6/uL</TestUnit>
-                            <TestRange>0 - 10</TestRange>
-                            <Colour>#FFFFFF</Colour>
-                        </Result>
-                        <Result diffgr:id="Result9" msdata:rowOrder="8">
-                            <RequestNumber>BIP17S</RequestNumber>
-                            <Result>Not Done</Result>
-                            <TestUnit>%</TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result10" msdata:rowOrder="9">
-                            <RequestNumber>BIP17S</RequestNumber>
-                            <Result>Not Done</Result>
-                            <TestUnit>%</TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result11" msdata:rowOrder="10">
-                            <RequestNumber>BKQ107</RequestNumber>
-                            <Result>2.07</Result>
-                            <TestUnit>g</TestUnit>
-                            <Colour>#FFFFFF</Colour>
-                        </Result>
-                        <Result diffgr:id="Result12" msdata:rowOrder="11">
-                            <RequestNumber>BIP14Z</RequestNumber>
-                            <Result>Not Done</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result13" msdata:rowOrder="12">
-                            <RequestNumber>BIP14Z</RequestNumber>
-                            <Result>Not Done</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result14" msdata:rowOrder="13">
-                            <RequestNumber>BIP153</RequestNumber>
-                            <Result>Not Done</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result15" msdata:rowOrder="14">
-                            <RequestNumber>BIP153</RequestNumber>
-                            <Result>Not Done</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result16" msdata:rowOrder="15">
-                            <RequestNumber>BKQ106</RequestNumber>
-                            <Result>1.02</Result>
-                            <TestUnit>g</TestUnit>
-                            <Colour>#FFFFFF</Colour>
-                        </Result>
-                        <Result diffgr:id="Result17" msdata:rowOrder="16">
-                            <RequestNumber>BKQ105</RequestNumber>
-                            <Result>1.00</Result>
-                            <TestUnit>g</TestUnit>
-                            <Colour>#FFFFFF</Colour>
-                        </Result>
-                        <Result diffgr:id="Result18" msdata:rowOrder="17">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result19" msdata:rowOrder="18">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result20" msdata:rowOrder="19">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result21" msdata:rowOrder="20">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result22" msdata:rowOrder="21">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result23" msdata:rowOrder="22">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result24" msdata:rowOrder="23">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result25" msdata:rowOrder="24">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result26" msdata:rowOrder="25">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result27" msdata:rowOrder="26">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result28" msdata:rowOrder="27">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result29" msdata:rowOrder="28">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result30" msdata:rowOrder="29">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result31" msdata:rowOrder="30">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result32" msdata:rowOrder="31">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result33" msdata:rowOrder="32">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result34" msdata:rowOrder="33">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result35" msdata:rowOrder="34">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Positive</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result36" msdata:rowOrder="35">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result37" msdata:rowOrder="36">
-                            <RequestNumber>BAN3DE</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result38" msdata:rowOrder="37">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result39" msdata:rowOrder="38">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result40" msdata:rowOrder="39">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result41" msdata:rowOrder="40">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result42" msdata:rowOrder="41">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result43" msdata:rowOrder="42">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result44" msdata:rowOrder="43">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result45" msdata:rowOrder="44">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result46" msdata:rowOrder="45">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result47" msdata:rowOrder="46">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result48" msdata:rowOrder="47">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result49" msdata:rowOrder="48">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                        <Result diffgr:id="Result50" msdata:rowOrder="49">
-                            <RequestNumber>BAN3DD</RequestNumber>
-                            <Result>Negative</Result>
-                            <TestUnit xml:space="preserve"> </TestUnit>
-                            <Colour>#00FFCC</Colour>
-                        </Result>
-                    </DocumentElement>
+                    <DocumentElement xmlns="">' +
+      string +
+      '</DocumentElement>
                 </diffgr:diffgram>
             </GetNewResultsResult>
         </GetNewResultsResponse>

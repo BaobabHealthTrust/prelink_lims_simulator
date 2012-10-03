@@ -1,0 +1,78 @@
+<script type="text/javascript" language="javascript">
+  <!--
+  tt_cancel_show = "";
+  tt_cancel_destination = "/view";
+  //-->
+</script>
+
+<%= form_tag(:action => "create") do %>
+
+  <%= text_field_tag "RequestNumber", nil,
+    {
+    :helptext => "Request Number"
+  }
+%>
+
+  <%= select_tag "PriorityCode",
+    options_for_select([["", ""], ["QC", "Q"], ["Routine", "R"], ["Urgent", "U"]]),
+    {
+    :helptext => "Select tests priority",
+    :nested => :true
+  }
+%>
+
+  <%= text_field_tag "DateCollected", nil,
+    {
+    :helptext => "Date sample collected",
+    :field_type => 'date'
+  }
+%>
+
+  <%= text_field_tag "DateReceived", nil,
+    {
+    :helptext => "Date sample received at facility",
+    :field_type => 'date'
+  }
+%>
+
+  <%= select_tag "TestCode",
+    grouped_options_for_select(@codes),
+    {
+    :helptext => "Select tests to be done",
+    :nested => :true
+  }
+%>
+
+  <%= text_field_tag "Result", nil,
+    {
+    :helptext => "Result"
+  }
+%>
+
+  <%= text_field_tag "DateResultReceived", nil,
+    {
+    :helptext => "Date Result Received",
+    :field_type => "date"
+  }
+%>
+
+  <%= text_field_tag "Range", nil,
+    {
+    :helptext => "Test Range"
+  }
+%>
+
+  <%= text_field_tag "TestUnit", nil,
+    {
+    :helptext => "Test Unit"
+  }
+%>
+
+  <%= text_field_tag "Colour", nil,
+    {
+    :helptext => "Colour"
+  }
+%>
+
+
+<% end %>
