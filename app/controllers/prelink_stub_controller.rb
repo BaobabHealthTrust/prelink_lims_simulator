@@ -67,7 +67,7 @@ class PrelinkStubController < ApplicationController
       order.update_attribute(:retrieved, 1)
       
       string = string + '<Result diffgr:id="Result1" msdata:rowOrder="0">
-          <PatientId>' + (order.national_id.nil? ? "" : order.national_id) + '</PatientId>
+          <ClinicPatientId>' + (order.national_id.nil? ? "" : order.national_id) + '</ClinicPatientId>
           <RequestNumber>' + (order.request_number.nil? ? "" : order.request_number) + '</RequestNumber>
           <Result>' + (order.result.nil? ? "" : order.result) + '</Result>
           <TestUnit>' + (order.test_unit.nil? ? "" : order.test_unit) + '</TestUnit>
@@ -154,11 +154,12 @@ class PrelinkStubController < ApplicationController
       order.update_attribute(:retrieved, 1)
 
       string = string + '<Result diffgr:id="Result1" msdata:rowOrder="0">
-          <PatientId>' + order.national_id + '</PatientId>
+          <ClinicPatientId>' + order.national_id + '</ClinicPatientId>
           <RequestNumber>' + order.request_number + '</RequestNumber>
           <Result>' + order.result + '</Result>
           <TestUnit>' + order.test_unit + '</TestUnit>
           <TestRange>' + order.test_range + '</TestRange>
+          <TestCode>' + order.test_code + '</TestCode>
           <Colour>' + order.colour + '</Colour>
       </Result>'
     end

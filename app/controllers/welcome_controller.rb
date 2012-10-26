@@ -93,24 +93,28 @@ class WelcomeController < ApplicationController
   end
 
   def create
-    order = LabOrder.create(
-      :national_id => params["SpineNumber"],
-      :priority_code => params["PriorityCode"],
-      :date_collected => params["DateCollected"],
-      :date_received => params["DateReceived"],
-      :test_code => params["TestCode"],
-      :result => params["Result"],
-      :date_result_received => params["DateResultReceived"],
-      :test_range => params["Range"],
-      :test_unit => params["TestUnit"],
-      :colour => params["Colour"]
-    )
+    params["TestCode"].each do |test|
+      
+      order = LabOrder.create(
+        :national_id => params["SpineNumber"],
+        :priority_code => params["PriorityCode"],
+        :date_collected => params["DateCollected"],
+        :date_received => params["DateReceived"],
+        :test_code => test,
+        :result => params["Result"],
+        :date_result_received => params["DateResultReceived"],
+        :test_range => params["Range"],
+        :test_unit => params["TestUnit"],
+        :colour => params["Colour"]
+      )
 
-    prefix = "SPN"
+      prefix = "SPN"
     
-    order.update_attributes(
-      :request_number => "#{prefix}#{order[:lab_order_id]}"
-    )
+      order.update_attributes(
+        :request_number => "#{prefix}#{order[:lab_order_id]}"
+      )
+
+    end
 
     redirect_to :view and return
   end

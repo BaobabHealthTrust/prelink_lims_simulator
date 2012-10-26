@@ -19,6 +19,14 @@
   }
 %>
 
+  <%= select_tag "TestCode[]",
+    grouped_options_for_select(@codes),
+    {
+    :helptext => "Select tests to be done",
+    :nested => :true,
+    :multiple => :multiple
+  } %>
+
   <%= select_tag "PriorityCode",
     options_for_select([["", ""], ["QC", "Q"], ["Routine", "R"], ["Urgent", "U"]]),
     {
@@ -38,14 +46,6 @@
     {
     :helptext => "Date sample received at facility",
     :field_type => 'date'
-  }
-%>
-
-  <%= select_tag "TestCode",
-    grouped_options_for_select(@codes),
-    {
-    :helptext => "Select tests to be done",
-    :nested => :true
   }
 %>
 
