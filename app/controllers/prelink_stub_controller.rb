@@ -72,6 +72,7 @@ class PrelinkStubController < ApplicationController
           <Result>' + (order.result.nil? ? "" : order.result) + '</Result>
           <TestUnit>' + (order.test_unit.nil? ? "" : order.test_unit) + '</TestUnit>
           <TestRange>' + (order.test_range.nil? ? "" : order.test_range) + '</TestRange>
+          <TestCode>' + order.test_code + '</TestCode>
           <Colour>' + (order.colour.nil? ? "" : order.colour) + '</Colour>
       </Result>'
     end
