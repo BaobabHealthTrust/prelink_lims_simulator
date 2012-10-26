@@ -7,7 +7,13 @@
 
 <%= form_tag(:action => "create") do %>
 
-  <%= text_field_tag "RequestNumber", nil,
+  <%= text_field_tag "SpineNumber", nil,
+    {
+    :helptext => "SPINE Number"
+  }
+%>
+
+  <%#= text_field_tag "RequestNumber", nil,
     {
     :helptext => "Request Number"
   }

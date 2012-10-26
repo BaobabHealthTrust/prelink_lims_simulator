@@ -67,11 +67,12 @@ class PrelinkStubController < ApplicationController
       order.update_attribute(:retrieved, 1)
       
       string = string + '<Result diffgr:id="Result1" msdata:rowOrder="0">
-          <RequestNumber>' + order.request_number + '</RequestNumber>
-          <Result>' + order.result + '</Result>
-          <TestUnit>' + order.test_unit + '</TestUnit>
-          <TestRange>' + order.test_range + '</TestRange>
-          <Colour>' + order.colour + '</Colour>
+          <PatientId>' + (order.national_id.nil? ? "" : order.national_id) + '</PatientId>
+          <RequestNumber>' + (order.request_number.nil? ? "" : order.request_number) + '</RequestNumber>
+          <Result>' + (order.result.nil? ? "" : order.result) + '</Result>
+          <TestUnit>' + (order.test_unit.nil? ? "" : order.test_unit) + '</TestUnit>
+          <TestRange>' + (order.test_range.nil? ? "" : order.test_range) + '</TestRange>
+          <Colour>' + (order.colour.nil? ? "" : order.colour) + '</Colour>
       </Result>'
     end
     
@@ -107,6 +108,93 @@ class PrelinkStubController < ApplicationController
                 </diffgr:diffgram>
             </GetNewResultsResult>
         </GetNewResultsResponse>
+    </soap:Body>
+</soap:Envelope>'
+
+    render :text => xml
+  end
+  
+=begin
+  {"Envelope"=>{"xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+      "xmlns:xsd"=>"http://www.w3.org/2001/XMLSchema",
+      "xmlns:soap"=>"http://schemas.xmlsoap.org/soap/envelope/",
+      "Header"=>{"preLinkHeader"=>{"xmlns"=>"http://www.prelink.co.za/",
+          "StationId"=>"85cdc188-dbb7-de11-83f8-00215af546ac",
+          "PassCode"=>"4de4355e-e948-43bc-889d-836b106b4575"}},
+      "Body"=>{
+        "GetResultsByDate"=>{
+          "xmlns"=>"http://www.prelink.co.za/",
+          "patientId"=>"P161400859740",
+          "startDate"=>"01082010",
+          "endDate"=>"30102012"
+        }
+      }
+    }
+  }
+=end
+
+  soap_action "GetResultsByDate",
+    :args   => {:patient_id => :string, :start_date => :string, :end_date => :string},
+    :return => :string,
+    :to     => :get_results_by_date
+  def get_results_by_date
+
+    startd = params[:start_date]
+    endd = params[:end_date]
+    
+    startdate = startd[4,4] + "-" + startd[2,2] + "-" + startd[0,2]
+    enddate = endd[4,4] + "-" + endd[2,2] + "-" + endd[0,2]
+    
+    @orders = LabOrder.find(:all, :conditions => ["national_id = ? AND DATE(date_received)" +
+          " >= ? AND DATE(date_received) <= ?", params[:patient_id], startdate, enddate]) rescue []
+
+    string = ""
+
+    @orders.each do |order|
+      order.update_attribute(:retrieved, 1)
+
+      string = string + '<Result diffgr:id="Result1" msdata:rowOrder="0">
+          <PatientId>' + order.national_id + '</PatientId>
+          <RequestNumber>' + order.request_number + '</RequestNumber>
+          <Result>' + order.result + '</Result>
+          <TestUnit>' + order.test_unit + '</TestUnit>
+          <TestRange>' + order.test_range + '</TestRange>
+          <Colour>' + order.colour + '</Colour>
+      </Result>'
+    end
+
+    xml = '<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Body>
+        <GetResultsByDateResponse xmlns="http://www.prelink.co.za/">
+            <GetResultsByDateResult>
+                <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+                    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Result" msdata:UseCurrentLocale="true">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="Result">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element name="RequestNumber" type="xs:string" minOccurs="0" />
+                                            <xs:element name="TestCode" type="xs:string" minOccurs="0" />
+                                            <xs:element name="Result" type="xs:string" minOccurs="0" />
+                                            <xs:element name="TestUnit" type="xs:string" minOccurs="0" />
+                                            <xs:element name="TestRange" type="xs:string" minOccurs="0" />
+                                            <xs:element name="Colour" type="xs:string" minOccurs="0" />
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:schema>
+                <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+                    <DocumentElement xmlns="">' +
+      string +
+      '</DocumentElement>
+                </diffgr:diffgram>
+            </GetResultsByDateResult>
+        </GetResultsByDateResponse>
     </soap:Body>
 </soap:Envelope>'
 
